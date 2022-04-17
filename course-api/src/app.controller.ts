@@ -8,7 +8,7 @@ export class AppController {
 
   @UseGuards(JwtAuthGuard)
   @Get('/courses')
-  getHello(): string {
-    return this.appService.getHello();
+  getCourses() {
+    return this.appService.getCourses();
   }
 }

@@ -15,17 +15,7 @@ export class AppController {
     let result = await this.authService.login(req.user);
     response.cookie(environment.token_key, result.access_token, {
       httpOnly: true,
-      domain: "auth.wisenoob.com",
-      secure: false
-    })
-    response.cookie(environment.token_key, result.access_token, {
-      httpOnly: true,
       domain: "wisenoob.com",
-      secure: false
-    })
-    response.cookie(environment.token_key, result.access_token, {
-      httpOnly: true,
-      domain: "localhost",
       secure: false
     })
     return result
