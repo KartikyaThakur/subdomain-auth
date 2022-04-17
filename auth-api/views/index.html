@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Auth-Poc</title>
+</head>
+<body>
+    <div class="log-form">
+        <h2>Login</h2>
+        <form>
+            <input type="text" id="username" name="username" placeholder="username" />
+            <input type="password" id="password" name="password" placeholder="password" />
+            <label id="messages"></label>
+            <button type="submit" id="submit" class="btn">Login</button>
+        </form>
+    </div>
+    <script>
+        const form = {
+            username: document.querySelector("#username"),
+            password: document.querySelector("#password"),
+            submit: document.querySelector("#submit"),
+            messages: document.getElementById("messages"),
+        };
+        const queryString = window.location.search;
+
+        const urlParams = new URLSearchParams(queryString);
+
+        let returnUrl = urlParams.get('returnUrl')
+        if(!returnUrl) {
+            returnUrl = "http://auth.wisenoob.com/home.html"
+        }
+
+        let button = form.submit.addEventListener("click", (e) => {
+            e.preventDefault();
+            const login = "http://auth.wisenoob.com/auth/login";
+            
+            fetch(login, {
+                method: "POST",
+                headers: {
+                    Accept: "application/json, text/plain, */*",
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    username: form.username.value,
+                    password: form.password.value,
+                }),
+            })
+            .then((response) => response.json())
+            .then((data) => {
+                console.log(data);
+
+                if (data.access_token) {
+                    console.log(data.access_token)
+                    location.assign(returnUrl);
+                }
+                if (data.error) {
+                    alert(error);
+                } else {
+                    console.log(data)
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        });
+    </script>
+    <style>
+        @font-face {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 300;
+            font-stretch: normal;
+            src: url(https://fonts.gstatic.com/s/opensans/v28/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsiH0B4gaVc.ttf) format('truetype');
+        }
+        @font-face {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 400;
+            font-stretch: normal;
+            src: url(https://fonts.gstatic.com/s/opensans/v28/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsjZ0B4gaVc.ttf) format('truetype');
+        }
+        @font-face {
+            font-family: 'Open Sans';
+            font-style: normal;
+            font-weight: 600;
+            font-stretch: normal;
+            src: url(https://fonts.gstatic.com/s/opensans/v28/memSYaGs126MiZpBA-UvWbX2vVnXBbObj2OVZyOOSr4dVJWUgsgH1x4gaVc.ttf) format('truetype');
+        }
+        @font-face {
+            font-family: 'Open Sans Condensed';
+            font-style: normal;
+            font-weight: 300;
+            src: url(https://fonts.gstatic.com/s/opensanscondensed/v22/z7NFdQDnbTkabZAIOl9il_O6KJj73e7Ff1GhDuXMQg.ttf) format('truetype');
+        }
+        @font-face {
+            font-family: 'Open Sans Condensed';
+            font-style: normal;
+            font-weight: 700;
+            src: url(https://fonts.gstatic.com/s/opensanscondensed/v22/z7NFdQDnbTkabZAIOl9il_O6KJj73e7Ff0GmDuXMQg.ttf) format('truetype');
+        }
+        * {
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'open sans', helvetica, arial, sans;
+            background: url(https://live.staticflickr.com/4750/40062312981_da8964b78f_k.jpg) no-repeat center center fixed;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+        .log-form {
+            width: 40%;
+            min-width: 320px;
+            max-width: 475px;
+            background: #fff;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            -o-transform: translate(-50%, -50%);
+            -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.25);
+        }
+        @media (max-width: 40em) {
+            .log-form {
+                width: 95%;
+                position: relative;
+                margin: 2.5% auto 0 auto;
+                left: 0%;
+                -webkit-transform: translate(0%, 0%);
+                -moz-transform: translate(0%, 0%);
+                -o-transform: translate(0%, 0%);
+                -ms-transform: translate(0%, 0%);
+                transform: translate(0%, 0%);
+            }
+        }
+        .log-form form {
+            display: block;
+            width: 100%;
+            padding: 2em;
+        }
+        .log-form h2 {
+            color: #5d5d5d;
+            font-family: 'open sans condensed';
+            font-size: 1.35em;
+            display: block;
+            background: #2a2a2a;
+            width: 100%;
+            text-transform: uppercase;
+            padding: 0.75em 1em 0.75em 1.5em;
+            box-shadow: inset 0px 1px 1px rgba(255, 255, 255, 0.05);
+            border: 1px solid #1d1d1d;
+            margin: 0;
+            font-weight: 200;
+        }
+        .log-form input {
+            display: block;
+            margin: auto auto;
+            width: 100%;
+            margin-bottom: 2em;
+            padding: 0.5em 0;
+            border: none;
+            border-bottom: 1px solid #eaeaea;
+            padding-bottom: 1.25em;
+            color: #757575;
+        }
+        .log-form input:focus {
+            outline: none;
+        }
+        .log-form .btn {
+            display: inline-block;
+            background: #1fb5bf;
+            border: 1px solid #1ba0a9;
+            padding: 0.5em 2em;
+            color: white;
+            margin-right: 0.5em;
+            box-shadow: inset 0px 1px 0px rgba(255, 255, 255, 0.2);
+        }
+        .log-form .btn:hover {
+            background: #23cad5;
+        }
+        .log-form .btn:active {
+            background: #1fb5bf;
+            box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.1);
+        }
+        .log-form .btn:focus {
+            outline: none;
+        }
+        .log-form .forgot {
+            color: #33d3de;
+            line-height: 0.5em;
+            position: relative;
+            top: 2.5em;
+            text-decoration: none;
+            font-size: 0.75em;
+            margin: 0;
+            padding: 0;
+            float: right;
+        }
+        .log-form .forgot:hover {
+            color: #1ba0a9;
+        }    
+    </style>
+</body>
+</html>
